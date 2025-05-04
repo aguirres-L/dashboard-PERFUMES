@@ -7,6 +7,7 @@ import Balance from "../../pages/Balance";
 import Proveedor from "../../pages/Proveedor";
 import SvgLogout from "../ui/svg/SvgLogout";
 import { ProductProvider } from "../../context/ContextProduct";
+import  { OrdersProvider } from "../../pages/context/ContextGetAllOrders";
 
 const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -98,10 +99,13 @@ const Dashboard = () => {
       {/* Contenido Principal con margen para no quedar tapado */}
       <div className={`${isSidebarOpen ? "ml-64" : "ml-20"} w-full`}>
         <ProductProvider>
+       <OrdersProvider >
 
         {userNavigate === '/ventas' && <Ventas />}
         {userNavigate === '/proveedores' && <Proveedor />} 
         {userNavigate === '/balance' && <Balance />}
+
+        </OrdersProvider >
         
         </ProductProvider>
       </div>

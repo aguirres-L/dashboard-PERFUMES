@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { getDocumentsFirebase } from '../services/data-firebase';
+import { getDocumentsFirebase } from '../../services/data-firebase';
 
 const ProductContext = createContext();
 
@@ -15,7 +15,7 @@ export const ProductProvider = ({ children }) => {
             try {
                 const querySnapshot = await getDocumentsFirebase('perfumes');
                 const productsData = querySnapshot 
-                console.log(productsData,'productsData of firebase');
+            //    console.log(productsData,'productsData of firebase');
                 
                 setProducts(productsData);
             } catch (err) {
