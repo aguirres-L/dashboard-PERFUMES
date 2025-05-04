@@ -29,6 +29,8 @@ export default function InventarioUi({
     quantity: "",
     duration:"",
     image: [], // ahora es un array para múltiples URLs
+    genero:''
+
   });
 
   const handleNewPerfumeChange = (e) => {
@@ -74,6 +76,7 @@ export default function InventarioUi({
       price: "",
       quantity: "",
       image: [],
+      genero:''
     });
     setNewImageUrl("");
     setShowNewPerfumeForm(false);
@@ -82,6 +85,8 @@ export default function InventarioUi({
   return (
     <div className="relative">
       <AnimatedSection delay={0.1}>
+
+        {/* Header */}
         <div className="mb-6">
           <div className="flex flex-row justify-between items-center mb-4">
             <h2 className="text-xl font-semibold text-gray-800">
@@ -159,7 +164,7 @@ export default function InventarioUi({
                 <div className="flex justify-between items-center mt-4">
                   <span className="text-lg font-bold text-gray-900">
                     ${perfume.price}
-                  </span>
+                    </span>
                   <span
                     className={`px-2 py-1 text-xs rounded-full ${
                       perfume.quantity > 5
@@ -336,6 +341,66 @@ export default function InventarioUi({
                 />
               </div>
             </div>
+ 
+            <div className="space-y-2">
+    {/* Checkbox Masculino */}
+    <div className="flex items-center">
+      <input
+        type="checkbox"
+        id="masculino"
+        name="gender"
+        value="masculino"
+        checked={newPerfume.gender === 'masculino'}
+        onChange={(e) => {
+          const newValue = e.target.checked ? 'masculino' : '';
+          setNewPerfume({ ...newPerfume, gender: newValue });
+        }}
+        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+      />
+      <label htmlFor="masculino" className="ml-2 block text-sm text-gray-700">
+        Masculino
+      </label>
+    </div>
+
+    {/* Checkbox Femenino */}
+    <div className="flex items-center">
+      <input
+        type="checkbox"
+        id="femenino"
+        name="gender"
+        value="femenino"
+        checked={newPerfume.gender === 'femenino'}
+        onChange={(e) => {
+          const newValue = e.target.checked ? 'femenino' : '';
+          setNewPerfume({ ...newPerfume, gender: newValue });
+        }}
+        className="h-4 w-4 text-pink-600 focus:ring-pink-500 border-gray-300 rounded"
+      />
+      <label htmlFor="femenino" className="ml-2 block text-sm text-gray-700">
+        Femenino
+      </label>
+    </div>
+
+    {/* Checkbox Unisex */}
+    <div className="flex items-center">
+      <input
+        type="checkbox"
+        id="unisex"
+        name="gender"
+        value="unisex"
+        checked={newPerfume.gender === 'unisex'}
+        onChange={(e) => {
+          const newValue = e.target.checked ? 'unisex' : '';
+          setNewPerfume({ ...newPerfume, gender: newValue });
+        }}
+        className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
+      />
+      <label htmlFor="unisex" className="ml-2 block text-sm text-gray-700">
+        Unisex
+      </label>
+    </div>
+</div>
+
 
             {/* Sección para agregar múltiples URLs de imagen */}
             <div>

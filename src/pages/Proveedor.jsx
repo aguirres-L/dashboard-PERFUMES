@@ -146,7 +146,7 @@ const Proveedor = () => {
             });
         }
     };
-
+    
     // Remover perfume del nuevo pedido
     const removeFromOrder = (perfumeId) => {
         setNewOrder({
