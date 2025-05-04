@@ -16,6 +16,7 @@ export default function InventarioUi({
 
       const { setIsSend, isSend } = useProducts();
   
+    const [perfumeSelectd, setPerfumeSelectd] = useState(null);
 
   const [newPerfume, setNewPerfume] = useState({
     name: "",
@@ -81,6 +82,8 @@ export default function InventarioUi({
     setNewImageUrl("");
     setShowNewPerfumeForm(false);
   };
+  if(perfumeSelectd) console.log(perfumeSelectd,'perfume selccionado');
+  
 
   return (
     <div className="relative">
@@ -118,6 +121,7 @@ export default function InventarioUi({
             <div
               key={perfume.id}
               className="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
+              onClick={() => setPerfumeSelectd(perfume)}
             >
               <img
                 src={perfume.image[0] || ""}
@@ -348,12 +352,12 @@ export default function InventarioUi({
       <input
         type="checkbox"
         id="masculino"
-        name="gender"
+        name="genero"
         value="masculino"
-        checked={newPerfume.gender === 'masculino'}
+        checked={newPerfume.genero === 'masculino'}
         onChange={(e) => {
           const newValue = e.target.checked ? 'masculino' : '';
-          setNewPerfume({ ...newPerfume, gender: newValue });
+          setNewPerfume({ ...newPerfume, genero: newValue });
         }}
         className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
       />
@@ -367,12 +371,12 @@ export default function InventarioUi({
       <input
         type="checkbox"
         id="femenino"
-        name="gender"
+        name="genero"
         value="femenino"
-        checked={newPerfume.gender === 'femenino'}
+        checked={newPerfume.genero === 'femenino'}
         onChange={(e) => {
           const newValue = e.target.checked ? 'femenino' : '';
-          setNewPerfume({ ...newPerfume, gender: newValue });
+          setNewPerfume({ ...newPerfume, genero: newValue });
         }}
         className="h-4 w-4 text-pink-600 focus:ring-pink-500 border-gray-300 rounded"
       />
@@ -386,12 +390,12 @@ export default function InventarioUi({
       <input
         type="checkbox"
         id="unisex"
-        name="gender"
+        name="genero"
         value="unisex"
-        checked={newPerfume.gender === 'unisex'}
+        checked={newPerfume.genero === 'unisex'}
         onChange={(e) => {
           const newValue = e.target.checked ? 'unisex' : '';
-          setNewPerfume({ ...newPerfume, gender: newValue });
+          setNewPerfume({ ...newPerfume, genero: newValue });
         }}
         className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
       />
@@ -466,6 +470,140 @@ export default function InventarioUi({
     </AnimatedSection>
   </div>
 )}
+
+{perfumeSelectd && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#2929292a] bg-opacity-50 backdrop-blur-sm p-4">
+    <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl p-6 max-h-[90vh] overflow-y-auto">
+      <div className="flex justify-between items-start mb-4">
+        <div>
+          <h3 className="text-2xl font-bold text-gray-900">{perfumeSelectd.name}</h3>
+          <p className="text-lg text-gray-600">{perfumeSelectd.brand}</p>
+        </div>
+        <button
+          onClick={() => setPerfumeSelectd(null)}
+          className="text-gray-500 hover:text-gray-700"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Columna izquierda - Imágenes */}
+        <div>
+          <div className="mb-4 h-64 bg-gray-100 rounded-lg overflow-hidden">
+            <img
+              src={perfumeSelectd.image[0] || ""}
+              alt={perfumeSelectd.name}
+              className="w-full h-full object-contain"
+            />
+          </div>
+          <div className="grid grid-cols-3 gap-2">
+            {perfumeSelectd.image.map((img, index) => (
+              <div key={index} className="h-20 bg-gray-100 rounded overflow-hidden">
+                <img
+                  src={img}
+                  alt={`${perfumeSelectd.name} ${index + 1}`}
+                  className="w-full h-full object-cover cursor-pointer"
+                  onClick={() => {
+                    // Rotar imágenes al hacer clic
+                    const newImages = [...perfumeSelectd.image];
+                    const firstImage = newImages.shift();
+                    newImages.push(firstImage);
+                    setPerfumeSelectd({...perfumeSelectd, image: newImages});
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Columna derecha - Información */}
+        <div>
+          {/* Precio y Cantidad editables */}
+          <div className="grid grid-cols-2 gap-4 mb-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Precio ($)</label>
+              <input
+                type="number"
+                value={perfumeSelectd.price}
+                onChange={(e) => setPerfumeSelectd({...perfumeSelectd, price: e.target.value})}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Cantidad</label>
+              <input
+                type="number"
+                value={perfumeSelectd.quantity}
+                onChange={(e) => setPerfumeSelectd({...perfumeSelectd, quantity: e.target.value})}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                min="1"
+              />
+            </div>
+          </div>
+
+          {/* Detalles del perfume */}
+          <div className="space-y-4">
+            <div>
+              <h4 className="font-semibold text-gray-900">Notas Olfativas</h4>
+              <p className="text-gray-700">{perfumeSelectd.notes}</p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <h4 className="font-semibold text-gray-900">Base</h4>
+                <p className="text-gray-700">{perfumeSelectd.base}</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-900">Corazón</h4>
+                <p className="text-gray-700">{perfumeSelectd.corazon}</p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <h4 className="font-semibold text-gray-900">Duración</h4>
+                <p className="text-gray-700">{perfumeSelectd.duration}</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-900">Género</h4>
+                <p className="text-gray-700 capitalize">{perfumeSelectd.gender || perfumeSelectd.genero}</p>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="font-semibold text-gray-900">Origen</h4>
+              <p className="text-gray-700">{perfumeSelectd.origin}</p>
+            </div>
+          </div>
+
+          {/* Botones de acción */}
+          <div className="mt-6 flex justify-end space-x-3">
+            <button
+              onClick={() => setPerfumeSelectd(null)}
+              className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+            >
+              Cancelar
+            </button>
+            <button
+              onClick={() => {
+                // Aquí iría la lógica para guardar los cambios
+                console.log("Datos actualizados:", perfumeSelectd);
+                setPerfumeSelectd(null);
+              }}
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            >
+              Guardar Cambios
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
     </div>
   );
 }
