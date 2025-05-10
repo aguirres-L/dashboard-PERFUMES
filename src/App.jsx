@@ -1,12 +1,24 @@
 import Home from './pages/Home'
+import Login from './pages/Login'
+import { AuthProvider, useAuth } from './context/AuthContext'
+import InitializeDatabase from './components/admin/InitializeDatabase';
 
-function App() {
+function AppContent() {
+  const { isAuthenticated } = useAuth();
 
   return (
     <>
-       <Home/>
+      {isAuthenticated ? <Home /> : <Login />}
+{/*       {process.env.NODE_ENV === 'development' && <InitializeDatabase />}
+     */}</>
+  )
+}
 
-    </>
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   )
 }
 

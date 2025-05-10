@@ -1,0 +1,79 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+{
+  "projectRules": {
+    // ====== AUTOGENERACIÓN DE TIPOS ====== //
+    "autoTypes": {
+      "props": {
+        "enabled": true,
+        "strategy": "interface", // También puede ser "type"
+        "naming": "I{{ComponentName}}Props", // Ej: IButtonProps
+        "location": "topOfFile",
+        "requiredByDefault": true,
+        "example": "// EjemploAndres: Props deben ser documentadas con JSDoc"
+      },
+      "hooks": {
+        "autoReturnType": true, // Ej: const useTimer = (): { time: number } => {...}
+        "dependencyArray": true // Verifica dependencias de useEffect/useMemo
+      }
+    },
+
+    // ====== ESTRUCTURA DE COMPONENTES ====== //
+    "components": {
+      "naming": {
+        "components": "PascalCase", // Ej: UserCard
+        "hooks": "usePascalCase"    // Ej: useFetchData
+      },
+      "patterns": {
+        "noInlineStyles": true,
+        "styleFiles": true, // Obliga archivos .styles.ts
+        "defaultExport": false, // Siempre export nombrados
+        "folderStructure": "feature-based" // Ej: /components/UserCard/UserCard.tsx
+      }
+    },
+
+    // ====== MANEJO DE ESTADO ====== //
+    "stateManagement": {
+      "preferredLibrary": "react-query", // Opcional: "context", "redux", etc.
+      "autoMemoize": true, // Sugiere useMemo/useCallback cuando detecta cálculos costosos
+      "errorHandling": "error-boundaries" // Componentes ErrorBoundary
+    },
+
+    // ====== FIREBASE ====== //
+    "firebase": {
+      "hooks": {
+        "enabled": true,
+        "naming": "useFire{{Operation}}", // Ej: useFireGetUsers
+        "typeSafety": true // Tipos para documentos/snapshots
+      },
+      "security": {
+        "rules": "validar-en-servidor" // Recuerda validar reglas en Firestore
+      }
+    },
+
+    // ====== CLEAN CODE & BEST PRACTICES ====== //
+    "codeQuality": {
+      "functions": {
+        "maxLines": 25,
+        "singleResponsibility": true,
+        "parametersLimit": 3 // Si hay más, usar objeto
+      },
+      "comments": {
+        "jsdoc": true, // Exige JSDoc en funciones complejas
+        "todoFormat": "// TODO [Agustín]: ..."
+      },
+      "imports": {
+        "order": "react > libraries > components > utils > styles",
+        "aliases": true // Usar paths como @/components
+      }
+    }
+  },
+  "examples": {
+    "component": "/docs/ExampleComponent.tsx",
+    "hook": "/docs/useExampleHook.ts"
+  }
+
+}

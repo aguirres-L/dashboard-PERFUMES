@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { getAuth, signOut } from "firebase/auth";
+import { useAuth } from "../../context/AuthContext";
 import SvgMenuOpen from "../ui/svg/SvgMenuOpen";
 import SvgMenuClose from "../ui/svg/SvgMenuClose";
 import AnimatedSection from "../../utils/AnimatedSection";
@@ -7,9 +9,12 @@ import Balance from "../../pages/Balance";
 import Proveedor from "../../pages/Proveedor";
 import SvgLogout from "../ui/svg/SvgLogout";
 import { ProductProvider } from "../../context/ContextProduct";
-import  { OrdersProvider } from "../../pages/context/ContextGetAllOrders";
+import { OrdersProvider } from "../../pages/context/ContextGetAllOrders";
+import UserStatusList from "../ui/UserStatusList";
 
 const Dashboard = () => {
+  const { logout } = useAuth();
+  const auth = getAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [userNavigate, setUserNavigate] = useState('/ventas');
 
@@ -38,9 +43,13 @@ const Dashboard = () => {
   };
 
   // Función para cerrar sesión (personaliza según tu lógica)
-  const handleLogout = () => {
-    console.log("Cerrar sesión");
-    // ... implementar lógica de logout ...
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      logout();
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+    }
   };
 
   return (
@@ -80,6 +89,7 @@ const Dashboard = () => {
               </li>
             ))}
           </ul>
+          {isSidebarOpen && <UserStatusList />}
           <button
             onClick={handleLogout}
             className={`mt-4 w-full flex items-center cursor-pointer p-3 rounded-lg transition-colors duration-300 bg-gray-400 hover:bg-gray-700 ${

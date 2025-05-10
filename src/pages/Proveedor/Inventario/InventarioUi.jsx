@@ -17,6 +17,7 @@ export default function InventarioUi({
       const { setIsSend, isSend } = useProducts();
   
     const [perfumeSelectd, setPerfumeSelectd] = useState(null);
+    const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   const [newPerfume, setNewPerfume] = useState({
     name: "",
@@ -492,31 +493,77 @@ export default function InventarioUi({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Columna izquierda - Imágenes */}
         <div>
-          <div className="mb-4 h-64 bg-gray-100 rounded-lg overflow-hidden">
+          <div className="relative mb-4 h-64 bg-gray-100 rounded-lg overflow-hidden group">
             <img
-              src={perfumeSelectd.image[0] || ""}
+              src={perfumeSelectd.image[activeImageIndex] || ""}
               alt={perfumeSelectd.name}
-              className="w-full h-full object-contain"
+              className="w-full h-full object-contain transition-transform duration-500"
             />
-          </div>
-          <div className="grid grid-cols-3 gap-2">
-            {perfumeSelectd.image.map((img, index) => (
-              <div key={index} className="h-20 bg-gray-100 rounded overflow-hidden">
-                <img
-                  src={img}
-                  alt={`${perfumeSelectd.name} ${index + 1}`}
-                  className="w-full h-full object-cover cursor-pointer"
-                  onClick={() => {
-                    // Rotar imágenes al hacer clic
-                    const newImages = [...perfumeSelectd.image];
-                    const firstImage = newImages.shift();
-                    newImages.push(firstImage);
-                    setPerfumeSelectd({...perfumeSelectd, image: newImages});
-                  }}
-                />
+            
+            {/* Botones de navegación */}
+            {perfumeSelectd.image.length > 1 && (
+              <>
+                <button
+                  onClick={() => setActiveImageIndex((prev) => 
+                    prev === 0 ? perfumeSelectd.image.length - 1 : prev - 1
+                  )}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+                <button
+                  onClick={() => setActiveImageIndex((prev) => 
+                    prev === perfumeSelectd.image.length - 1 ? 0 : prev + 1
+                  )}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </>
+            )}
+            
+            {/* Indicadores de posición */}
+            {perfumeSelectd.image.length > 1 && (
+              <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
+                {perfumeSelectd.image.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setActiveImageIndex(index)}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      index === activeImageIndex 
+                        ? 'bg-white w-4' 
+                        : 'bg-white/50 hover:bg-white/75'
+                    }`}
+                  />
+                ))}
               </div>
-            ))}
+            )}
           </div>
+          
+          {/* Miniaturas */}
+          {perfumeSelectd.image.length > 1 && (
+            <div className="grid grid-cols-5 gap-2">
+              {perfumeSelectd.image.map((img, index) => (
+                <div 
+                  key={index} 
+                  className={`h-16 bg-gray-100 rounded overflow-hidden cursor-pointer transition-all ${
+                    index === activeImageIndex ? 'ring-2 ring-blue-500' : 'hover:opacity-75'
+                  }`}
+                  onClick={() => setActiveImageIndex(index)}
+                >
+                  <img
+                    src={img}
+                    alt={`${perfumeSelectd.name} ${index + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Columna derecha - Información */}
