@@ -30,6 +30,7 @@ export const AuthProvider = ({ children }) => {
     try {
       if (currentUser) {
         await updateUserStatus(currentUser.idFirestore, false);
+        await updateDocumentFirebase('users', currentUser.idFirestore, { isOnline: false });
       }
       setIsAuthenticated(false);
       setCurrentUser(null);

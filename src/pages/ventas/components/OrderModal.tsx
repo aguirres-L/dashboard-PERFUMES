@@ -53,6 +53,10 @@ const OrderModal: React.FC<OrderModalProps> = ({
     return encodeURIComponent(message);
   };
 
+
+  console.log(selectedProduct,'selectedProduct from screen order modal');
+  
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
       <AnimatedSection delay={0.1}>

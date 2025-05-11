@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { USERS_CREDENTIALS } from '../config/users';
 import { useAuth } from '../context/AuthContext';
 
@@ -9,6 +9,9 @@ const Login = () => {
     password: ''
   });
   const [error, setError] = useState('');
+  const [show, setShow] = useState(false);
+
+  useEffect(() => { setShow(true); }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,8 +37,11 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md w-96">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+      <h1 className="text-3xl font-extrabold text-blue-600 mb-8 animate-bounce">
+        My Dashboard
+      </h1>
+      <div className="bg-white p-8 rounded-lg shadow-md w-96 animate-fadeUp">
         <h2 className="text-2xl font-bold mb-6 text-center">
           Iniciar Sesión
         </h2>
@@ -78,8 +84,6 @@ const Login = () => {
             Iniciar Sesión
           </button>
         </form>
-
-        
       </div>
     </div>
   );
