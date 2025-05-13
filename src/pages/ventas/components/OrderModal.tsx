@@ -17,13 +17,13 @@ const OrderModal: React.FC<OrderModalProps> = ({
 }) => {
   const handleStatusChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     try {
-      const newStatus = e.target.value === "completed";
+      const newStatus = e.target.value;
       await updateDocumentFirebase("orders", selectedProduct.idFirestore, {
         estado: newStatus
       });
       
       // Actualizar la UI o recargar los datos según sea necesario
-      if (newStatus) {
+      if (newStatus === "completed") {
         onConfirmOrder();
       }
     } catch (error) {
@@ -34,8 +34,8 @@ const OrderModal: React.FC<OrderModalProps> = ({
 
   const generateWhatsAppMessage = () => {
     const message = `¡Hola ${selectedProduct.buyerInfo.nombre}! 🌟\n\n` +
-      `Somos el equipo de ventas de *AURUM* y queremos agradecerte por tu compra ${selectedProduct.idFirestore.substring(0, 8)}. \n\n` +
-      `*Puedes dar seguimiento a tu pedido en:* www.tupedido.com usando tu clave de compra: ${selectedProduct.idFirestore.substring(0, 8)} \n\n` +
+      `Somos el equipo de ventas de *AURUM* y queremos agradecerte por tu compra ${selectedProduct.idFirestore}. \n\n` +
+      `*Puedes dar seguimiento a tu pedido en:* www.tupedido.com usando tu clave de compra: ${selectedProduct.idFirestore} \n\n` +
       `*Para completar tu pedido:*\n` +
       `1. Realiza la transferencia a nuestra cuenta bancaria:\n\n` +
       `🏦 *Banco:* [Nombre del Banco]\n` +
@@ -70,13 +70,13 @@ const OrderModal: React.FC<OrderModalProps> = ({
           <div className="flex justify-between items-center border-b p-6 sticky top-0 bg-white z-10">
             <div className="flex items-center gap-4">
               <h3 className="text-2xl font-bold text-gray-800">
-                Pedido #{selectedProduct.idFirestore.substring(0, 6)}
+                Pedido {selectedProduct.idFirestore}
               </h3>
               <span className={`
                 px-3 py-1 rounded-full text-sm font-medium
-                ${selectedProduct.estado ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800'}
+                ${selectedProduct.estado === "completed" ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800'}
               `}>
-                {selectedProduct.estado ? 'Completado' : 'Pendiente'}
+                {selectedProduct.estado === "completed" ? 'Completado' : 'Pendiente'}
               </span>
             </div>
             <button
@@ -124,8 +124,8 @@ const OrderModal: React.FC<OrderModalProps> = ({
                       </div>
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-600">Estado actual:</span>
-                        <span className={`font-medium ${selectedProduct.estado ? 'text-green-600' : 'text-amber-600'}`}>
-                          {selectedProduct.estado ? 'Completado' : 'Pendiente'}
+                        <span className={`font-medium ${selectedProduct.estado === "completed" ? 'text-green-600' : 'text-amber-600'}`}>
+                          {selectedProduct.estado === "completed" ? 'Completado' : 'Pendiente'}
                         </span>
                       </div>
                       <div className="flex justify-between text-lg font-bold pt-2 border-t border-gray-200">
@@ -211,7 +211,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
                         Estado del pedido
                       </label>
                       <select
-                        value={selectedProduct.estado ? "completed" : "pending"}
+                        value={selectedProduct.estado || "pending"}
                         onChange={handleStatusChange}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                       >
@@ -247,12 +247,12 @@ const OrderModal: React.FC<OrderModalProps> = ({
 
                   {/* Footer Actions */}
                   <div className="bg-gray-50 px-6 py-4 flex justify-between items-center border-t border-gray-200">
-                    <button
+                  {/*   <button
                       onClick={onConfirmOrder}
                       className={`
                         inline-flex items-center px-4 py-2 rounded-lg shadow-sm text-white
                         focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors
-                        ${selectedProduct.estado
+                        ${selectedProduct.estado === "completed"
                           ? 'bg-gray-500 hover:bg-gray-600 focus:ring-gray-500'
                           : 'bg-green-500 hover:bg-green-600 focus:ring-green-500'
                         }
@@ -261,8 +261,8 @@ const OrderModal: React.FC<OrderModalProps> = ({
                       <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
-                      {selectedProduct.estado ? 'Pedido Completado' : 'Marcar como Completado'}
-                    </button>
+                      {selectedProduct.estado === "completed" ? 'Pedido Completado' : 'Marcar como Completado'}
+                    </button> */}
                     
                     <button
                       className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"

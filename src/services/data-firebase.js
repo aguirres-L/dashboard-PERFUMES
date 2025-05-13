@@ -10,7 +10,7 @@ const firebaseConfig = {
   projectId: "verdu-shop",
   storageBucket: "verdu-shop.appspot.com",
   messagingSenderId: "188984786995",
-  appId: "1:188984786995:web:5c6ce0dd1e82975d1da346"
+  appId: "1:188984786995:web:5c6ce0dd1e82975d1da346" 
 };
 
 // Inicializar Firebase y Firestore

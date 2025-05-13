@@ -10,6 +10,7 @@ export default function PerfumeSelectd({ perfume, onClose, onUpdate }) {
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [newImageUrl, setNewImageUrl] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,6 +54,26 @@ export default function PerfumeSelectd({ perfume, onClose, onUpdate }) {
       setError("Error al eliminar perfume");
     } finally {
       setDeleting(false);
+    }
+  };
+
+  const handleAddImage = () => {
+    if (!newImageUrl) return;
+    setEditPerfume(prev => ({
+      ...prev,
+      image: [...(prev.image || []), newImageUrl]
+    }));
+    setNewImageUrl("");
+  };
+
+  const handleRemoveImage = (idx) => {
+    setEditPerfume(prev => ({
+      ...prev,
+      image: prev.image.filter((_, i) => i !== idx)
+    }));
+    // Si eliminas la imagen activa, resetea el índice si es necesario
+    if (activeImageIndex >= editPerfume.image.length - 1 && activeImageIndex > 0) {
+      setActiveImageIndex(activeImageIndex - 1);
     }
   };
 
@@ -131,6 +152,40 @@ export default function PerfumeSelectd({ perfume, onClose, onUpdate }) {
                 ))}
               </div>
             )}
+            {/* Bloque de edición de URLs de imágenes */}
+            <div className="mt-4">
+              <label className="block text-sm font-medium text-gray-700 mb-1">Agregar nueva URL de imagen</label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={newImageUrl}
+                  onChange={e => setNewImageUrl(e.target.value)}
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md"
+                  placeholder="Pega la URL aquí"
+                />
+                <button
+                  onClick={handleAddImage}
+                  className="px-3 py-2 bg-green-600 text-white rounded-md"
+                  disabled={!newImageUrl}
+                >
+                  Añadir
+                </button>
+              </div>
+              <ul className="mt-2 space-y-1">
+                {editPerfume.image?.map((url, idx) => (
+                  <li key={idx} className="flex items-center gap-2">
+                    <img src={url} alt="preview" className="w-8 h-8 object-cover rounded" onError={e => e.target.style.display='none'} />
+                    <span className="truncate flex-1 text-xs">{url}</span>
+                    <button
+                      onClick={() => handleRemoveImage(idx)}
+                      className="text-red-500 hover:text-red-700 text-xs"
+                    >
+                      Eliminar
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
           {/* Información y edición */}
           <div>

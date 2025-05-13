@@ -24,13 +24,33 @@ interface OrderProps {
   order: {
     idFirestore: string;
     fecha: string;
-    estado: boolean;
+    estado: string;
     totalPrice: number;
     buyerInfo: BuyerInfo;
     cart: Product[];
   };
   onOrderClick: (order: any) => void;
 }
+
+// Mapeo de labels y estilos para los estados
+const estadoLabels: Record<string, string> = {
+  pending: 'Pendiente',
+  processing: 'En proceso',
+  shipped: 'Enviado',
+  completed: 'Completada',
+};
+const estadoStyles: Record<string, string> = {
+  pending: 'bg-amber-500 text-white',
+  processing: 'bg-blue-500 text-white',
+  shipped: 'bg-purple-500 text-white',
+  completed: 'bg-green-500 text-white',
+};
+const estadoGradients: Record<string, string> = {
+  pending: 'bg-gradient-to-r from-amber-50 to-amber-100',
+  processing: 'bg-gradient-to-r from-blue-50 to-blue-100',
+  shipped: 'bg-gradient-to-r from-purple-50 to-purple-100',
+  completed: 'bg-gradient-to-r from-green-50 to-green-100',
+};
 
 const OrderCard: React.FC<OrderProps> = ({ order, onOrderClick }) => {
   // Animación para el hover
@@ -51,25 +71,20 @@ const OrderCard: React.FC<OrderProps> = ({ order, onOrderClick }) => {
       {/* Encabezado de la orden con gradiente */}
       <div 
         className={`p-5 ${
-          order.estado 
-            ? 'bg-gradient-to-r from-green-50 to-green-100' 
-            : 'bg-gradient-to-r from-amber-50 to-amber-100'
+          estadoGradients[order.estado] || 'bg-gradient-to-r from-gray-50 to-gray-100'
         } border-b border-gray-100`}
       >
         <div className="flex justify-between items-start">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <h2 className="text-lg font-semibold text-gray-800">
-                #{order.idFirestore.substring(0, 8)}
+                #{order.idFirestore}
               </h2>
               <span className={`
                 px-3 py-1 rounded-full text-xs font-medium 
-                ${order.estado 
-                  ? 'bg-green-500 text-white' 
-                  : 'bg-amber-500 text-white'
-                }
+                ${estadoStyles[order.estado] || 'bg-gray-300 text-gray-700'}
               `}>
-                {order.estado ? 'Completada' : 'Pendiente'}
+                {estadoLabels[order.estado] || 'Desconocido'}
               </span>
             </div>
             <p className="text-sm text-gray-600">

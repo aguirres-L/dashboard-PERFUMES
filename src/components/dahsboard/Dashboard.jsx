@@ -17,6 +17,7 @@ const Dashboard = () => {
   const auth = getAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [userNavigate, setUserNavigate] = useState('/ventas');
+  const [mantoActivo, setMantoActivo] = useState(false);
 
   // Datos del menú
   const menuItems = [
@@ -54,12 +55,27 @@ const Dashboard = () => {
 
   return (
     <div className="flex">
+      {/* Overlay de opacidad */}
+      {mantoActivo && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-40 z-50 pointer-events-none"
+        />
+      )}
       {/* Sidebar fijo */}
       <div
         className={`fixed top-0 left-0 h-screen bg-blue-800 text-white transition-all duration-300 ${
           isSidebarOpen ? "w-64" : "w-20"
         }`}
       >
+        {/* Botón para el manto */}
+        <div className="p-2 flex justify-center">
+          <button
+            onClick={() => setMantoActivo((v) => !v)}
+            className="mb-2 px-3 py-1 rounded bg-gray-700 text-white hover:bg-gray-600 text-sm"
+          >
+            {mantoActivo ? "Quitar manto" : "Poner manto"}
+          </button>
+        </div>
         <div className="p-4 flex justify-between items-center border-b border-blue-700">
           {isSidebarOpen && <h1 className="text-xl font-bold">Mi Dashboard</h1>}
           <button

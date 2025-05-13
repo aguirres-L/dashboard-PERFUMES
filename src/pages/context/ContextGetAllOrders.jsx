@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { getDocumentsFirebase } from '../../services/data-firebase';
+import { db } from '../../services/data-firebase';
+import { collection, onSnapshot } from 'firebase/firestore';
 
 const OrdersContext = createContext();
 
@@ -10,22 +11,19 @@ export const OrdersProvider = ({ children }) => {
     const [isUpdated, setIsUpdated] = useState(null);
 
     useEffect(() => {
-        const fetchOrders = async () => {
-            try {
-                const querySnapshot = await getDocumentsFirebase('orders');
-                const ordersData = querySnapshot;
-                console.log(ordersData, 'ordersData from firebase');
-                
-                setOrders(ordersData);
-            } catch (err) {
-                console.error("Error fetching orders: ", err);
-                setError(err);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchOrders();
+        setLoading(true);
+        setError(null);
+        // Usar onSnapshot directamente para escuchar la colección 'orders'
+        const colRef = collection(db, 'orders');
+        const unsubscribe = onSnapshot(colRef, (snapshot) => {
+            const ordersData = snapshot.docs.map(doc => ({ idFirestore: doc.id, ...doc.data() }));
+            setOrders(ordersData);
+            setLoading(false);
+        }, (err) => {
+            setError(err);
+            setLoading(false);
+        });
+        return () => unsubscribe();
     }, [isUpdated]);
 
     return (

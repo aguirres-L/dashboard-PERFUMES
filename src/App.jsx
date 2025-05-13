@@ -2,6 +2,7 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import InitializeDatabase from './components/admin/InitializeDatabase';
+//import SeeOrder from './pages/ventas/components/SeeOrder';
 
 function AppContent() {
   const { isAuthenticated } = useAuth();
