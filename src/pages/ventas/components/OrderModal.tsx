@@ -35,7 +35,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
   const generateWhatsAppMessage = () => {
     const message = `¡Hola ${selectedProduct.buyerInfo.nombre}! \n\n` +
       `Somos el equipo de  de *AURUM* y queremos agradecerte por tu compra ${selectedProduct.idFirestore}. \n\n` +
-      `*Puedes dar seguimiento a tu pedido en:* https://see-your-perfume.netlify.app/ usando tu clave de compra: ${selectedProduct.idFirestore} \n\n` +
+      `*Puedes dar seguimiento a tu pedido en:* https://consulta-tu-pedido.netlify.app/ usando tu clave de compra: ${selectedProduct.idFirestore} \n\n` +
       `*Para completar tu pedido:*\n` +
       `1. Realiza la transferencia a nuestra cuenta bancaria:\n\n` +
       ` *Banco:* Lemon\n` +
