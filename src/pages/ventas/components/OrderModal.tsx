@@ -33,22 +33,21 @@ const OrderModal: React.FC<OrderModalProps> = ({
   };
 
   const generateWhatsAppMessage = () => {
-    const message = `¡Hola ${selectedProduct.buyerInfo.nombre}! 🌟\n\n` +
-      `Somos el equipo de ventas de *AURUM* y queremos agradecerte por tu compra ${selectedProduct.idFirestore}. \n\n` +
-      `*Puedes dar seguimiento a tu pedido en:* www.tupedido.com usando tu clave de compra: ${selectedProduct.idFirestore} \n\n` +
+    const message = `¡Hola ${selectedProduct.buyerInfo.nombre}! \n\n` +
+      `Somos el equipo de  de *AURUM* y queremos agradecerte por tu compra ${selectedProduct.idFirestore}. \n\n` +
+      `*Puedes dar seguimiento a tu pedido en:* https://see-your-perfume.netlify.app/ usando tu clave de compra: ${selectedProduct.idFirestore} \n\n` +
       `*Para completar tu pedido:*\n` +
       `1. Realiza la transferencia a nuestra cuenta bancaria:\n\n` +
-      `🏦 *Banco:* [Nombre del Banco]\n` +
-      `👤 *Titular:* AURUM\n` +
-      `🔢 *Cuenta:* [Tipo: Corriente/Ahorros]\n` +
-      `📌 *Número:* [XXXX-XXXX-XXXX]\n` +
-      `📝 *RIF:* J-XXXXXXXX-X\n\n` +
+      ` *Banco:* Lemon\n` +
+      ` *Titular:* Agustin Aguirres\n` +
+      ` *Alias:* TudoNum.Lemon\n` +
       `2. Envíanos el comprobante de pago por este mismo medio\n` +
       `3. Nosotros verificaremos el pago y procederemos con tu pedido\n\n` +
       `*Datos de tu compra:*\n` +
-      `📦 Productos: ${selectedProduct.cart.length}\n` +
-      `💰 Total: $${selectedProduct.totalPrice}\n\n` +
-      `¿Tienes alguna duda? Estamos aquí para ayudarte. ¡Gracias por elegir AURUM!`;
+      ` Productos: ${selectedProduct.cart.length}\n` +
+      ` Total: $${selectedProduct.totalPrice}\n\n` +
+      `¿Tienes alguna duda? Estamos aquí para ayudarte. ¡Gracias por elegir AURUM!\n\n`+
+      `Tu clave de seguimiento : ${selectedProduct.idFirestore} `;
 
     return encodeURIComponent(message);
   };
