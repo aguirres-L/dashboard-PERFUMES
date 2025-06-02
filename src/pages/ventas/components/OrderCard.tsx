@@ -100,8 +100,8 @@ const OrderCard: React.FC<OrderProps> = ({ order, onOrderClick }) => {
           <div className="text-right">
             <p className="text-xl font-bold text-gray-800">
               ${order.totalPrice.toLocaleString('es-ES', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
+                minimumFractionDigits: 3,
+                maximumFractionDigits: 3
               })}
             </p>
           </div>

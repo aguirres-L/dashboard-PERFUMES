@@ -11,6 +11,8 @@ import SvgLogout from "../ui/svg/SvgLogout";
 import { ProductProvider } from "../../context/ContextProduct";
 import { OrdersProvider } from "../../pages/context/ContextGetAllOrders";
 import UserStatusList from "../ui/UserStatusList";
+import SvgFocoOn from "../ui/svg/SvgFocoOn";
+import SvgFocoOff from "../ui/svg/SvgFocoOff";
 
 const Dashboard = () => {
   const { logout } = useAuth();
@@ -71,9 +73,9 @@ const Dashboard = () => {
         <div className="p-2 flex justify-center">
           <button
             onClick={() => setMantoActivo((v) => !v)}
-            className="mb-2 px-3 py-1 rounded bg-gray-700 text-white hover:bg-gray-600 text-sm"
+            className="mb-2 px-3 py-1 rounded  text-white hover:bg-blue-700 text-sm"
           >
-            {mantoActivo ? "Quitar manto" : "Poner manto"}
+            {mantoActivo ? <SvgFocoOn/> : <SvgFocoOff/>}
           </button>
         </div>
         <div className="p-4 flex justify-between items-center border-b border-blue-700">
